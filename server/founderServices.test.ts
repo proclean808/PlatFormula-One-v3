@@ -1,0 +1,15 @@
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { beforeAll, afterAll, describe, expect, it, vi } from "vitest";
+import RelatedFounderResources from "../client/src/components/RelatedFounderResources";
+import { founderServiceResources, resourcesForPlacement } from "../shared/founderServices";
+import { resourceDirectory, searchResourceDirectory, isSafeDirectoryUrl } from "../shared/resourceDirectory";
+beforeAll(()=>vi.stubGlobal("React",React));afterAll(()=>vi.unstubAllGlobals());
+describe("founder services and contextual references",()=>{
+ it("includes eight service resources and six presentation/research references",()=>{expect(founderServiceResources).toHaveLength(14);expect(founderServiceResources.filter(e=>e.category==="Founder Services")).toHaveLength(8);for(const e of founderServiceResources){expect(resourceDirectory).toContain(e);expect(isSafeDirectoryUrl(e.url)).toBe(true);expect(e.reviewedAt).toBe("2026-11-18");expect(e.caution).toBeTruthy();}});
+ it("does not invent partnership, integration, price or credential claims",()=>{for(const e of founderServiceResources){expect(e.relationshipStatus).toBe("External Resource");expect(e.featured).toBe(false);expect(e.description).not.toMatch(/\$|guaranteed|official partner|affiliate partner|\d+%/i);expect(e.url).not.toMatch(/[?&](aff|ref|affiliate|referral)=/i);}});
+ it("routes presentation, research and investor-sharing references to appropriate workspaces",()=>{expect(resourcesForPlacement("pitch").map(e=>e.id)).toEqual(["yoodli","pitchbob","papermark"]);expect(resourcesForPlacement("validation").map(e=>e.id)).toEqual(["perspective-ai","outset","strella"]);expect(resourcesForPlacement("raise").map(e=>e.id)).toContain("papermark");});
+ it("finds company formation and registered patent-practitioner resources through existing search",()=>{expect(searchResourceDirectory(resourceDirectory,{query:"company formation",category:"Founder Services",aiOnly:false}).map(e=>e.id)).toContain("stripe-atlas");expect(searchResourceDirectory(resourceDirectory,{query:"patent attorney",category:"Founder Services",aiOnly:false}).map(e=>e.id)).toContain("uspto-practitioners");});
+ it("uses the actual USPTO register and correct Perspective AI destination",()=>{expect(founderServiceResources.find(e=>e.id==="uspto-practitioners")?.url).toBe("https://oedci.uspto.gov/OEDCI/practitionerSearchEntry");expect(founderServiceResources.find(e=>e.id==="perspective-ai")?.url).toBe("https://getperspective.ai/");});
+ it("renders safe contextual links and visible affiliation boundaries",()=>{const html=renderToStaticMarkup(React.createElement(RelatedFounderResources,{placement:"pitch",title:"Pitch resources"}));expect(html).toContain('aria-label="Pitch resources"');expect(html).toContain('target="_blank"');expect(html).toContain('rel="noopener noreferrer"');expect(html).toContain('External Resource');expect(html).toContain('not connected agents, established affiliate relationships');expect(html).not.toContain('Corgi');});
+});
