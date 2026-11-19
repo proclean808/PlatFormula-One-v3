@@ -1,0 +1,66 @@
+[
+  {
+    "device": "s25",
+    "capability": "settings.inspect",
+    "adapter": "gemini-native-manual",
+    "priority": 1,
+    "available": false,
+    "verified": false
+  },
+  {
+    "device": "s25",
+    "capability": "apps.inventory",
+    "adapter": "gemini-native-manual",
+    "priority": 2,
+    "available": false,
+    "verified": false
+  },
+  {
+    "device": "s25",
+    "capability": "ui.operate",
+    "adapter": "accessibility-approved",
+    "priority": 3,
+    "available": false,
+    "verified": false
+  },
+  {
+    "device": "s25",
+    "capability": "shell.execute",
+    "adapter": "rcd-gated",
+    "priority": 4,
+    "available": false,
+    "verified": false
+  },
+  {
+    "device": "s26",
+    "capability": "settings.inspect",
+    "adapter": "gemini-native-manual",
+    "priority": 1,
+    "available": false,
+    "verified": false
+  },
+  {
+    "device": "s26",
+    "capability": "apps.inventory",
+    "adapter": "gemini-native-manual",
+    "priority": 2,
+    "available": false,
+    "verified": false
+  },
+  {
+    "device": "s26",
+    "capability": "ui.operate",
+    "adapter": "accessibility-approved",
+    "priority": 3,
+    "available": false,
+    "verified": false
+  },
+  {
+    "device": "s26",
+    "capability": "shell.execute",
+    "adapter": "rcd-gated",
+    "priority": 4,
+    "available": false,
+    "verified": false
+  }
+]
